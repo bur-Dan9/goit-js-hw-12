@@ -1,16 +1,51 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+const gallery = document.querySelector('.gallery');
+const loader = document.querySelector('.loader');
+const loadMoreBtn = document.querySelector('.load-more');
 
-const gallery = document.querySelector(`.gallery`);
 let lightbox = new SimpleLightbox('.gallery a', {
   captions: true,
   captionsData: 'alt',
   captionDelay: 250,
 });
 
-export function renderImages(images, append = false) {
+// Показати лоадер
+export function showLoader() {
+  if (loader) {
+    loader.style.display = 'block';
+  }
+}
 
+// Сховати лоадер
+export function hideLoader() {
+  if (loader) {
+    loader.style.display = 'none';
+  }
+}
+
+// Показати кнопку "Load More"
+export function showLoadMoreButton() {
+  if (loadMoreBtn) {
+    loadMoreBtn.classList.remove('hidden');
+  }
+}
+
+// Сховати кнопку "Load More"
+export function hideLoadMoreButton() {
+  if (loadMoreBtn) {
+    loadMoreBtn.classList.add('hidden');
+  }
+}
+
+// Очистити галерею
+export function clearGallery() {
+  gallery.innerHTML = '';
+}
+
+// Рендер зображень (append = true додає, false — перезаписує)
+export function renderImages(images, append = false) {
   const markup = images
     .map(
       ({
@@ -24,28 +59,27 @@ export function renderImages(images, append = false) {
       }) => `
       <li class="gallery-item">
         <a href="${largeImageURL}" class="gallery-link">
-          <img src="${webformatURL}" alt="${tags}" class="gallery-image"  width="360" height="200"/>
+          <img src="${webformatURL}" alt="${tags}" class="gallery-image" width="360" height="200" />
         </a>
         <div class="info">
-        <ul class="baner">
-          <li class="baner-li">
-            <p class="baner-title">Likes</p>
-            <p class="baner-text">${likes}</p>
-          </li>
-          <li class="baner-li">
-            <p class="baner-title">Views</p>
-            <p class="baner-text">${views}</p>
-          </li>
-          <li class="baner-li">
-            <p class="baner-title">Comments</p>
-            <p class="baner-text">${comments}</p>
-          </li>
-          <li class="baner-li">
-            <p class="baner-title">Downloads</p>
-            <p class="baner-text">${downloads}</p>
-          
+          <ul class="baner">
+            <li class="baner-li">
+              <p class="baner-title">Likes</p>
+              <p class="baner-text">${likes}</p>
             </li>
-        </ul>
+            <li class="baner-li">
+              <p class="baner-title">Views</p>
+              <p class="baner-text">${views}</p>
+            </li>
+            <li class="baner-li">
+              <p class="baner-title">Comments</p>
+              <p class="baner-text">${comments}</p>
+            </li>
+            <li class="baner-li">
+              <p class="baner-title">Downloads</p>
+              <p class="baner-text">${downloads}</p>
+            </li>
+          </ul>
         </div>
       </li>`
     )
@@ -56,8 +90,6 @@ export function renderImages(images, append = false) {
   } else {
     gallery.innerHTML = markup;
   }
+
   lightbox.refresh();
-}
-export function clearGallery() {
-  gallery.innerHTML = '';
 }
